@@ -1,0 +1,6 @@
+name = "handelwebsite"
+type = "javascript"
+
+account_id = "835e77b528d856d2d4eb62c7ebf1d406"
+workers_dev = true
+compatibility_date = "2024-03-16" # Update to the latest
