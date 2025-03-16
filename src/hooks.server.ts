@@ -2,8 +2,8 @@
 
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
 import {
-  VITE_PUBLIC_SUPABASE_ANON_KEY,
-  VITE_PUBLIC_SUPABASE_URL
+  PUBLIC_SUPABASE_ANON_KEY as PUBLIC_SUPABASE_ANON_KEY,
+  PUBLIC_SUPABASE_URL as PUBLIC_SUPABASE_URL,
 } from "$env/static/public"
 import { createServerClient } from "@supabase/ssr"
 import { createClient } from "@supabase/supabase-js"
@@ -12,8 +12,8 @@ import { sequence } from "@sveltejs/kit/hooks"
 
 export const supabase: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createServerClient(
-    VITE_PUBLIC_SUPABASE_URL,
-    VITE_PUBLIC_SUPABASE_ANON_KEY,
+    PUBLIC_SUPABASE_URL,
+    PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll: () => event.cookies.getAll(),
@@ -32,7 +32,7 @@ export const supabase: Handle = async ({ event, resolve }) => {
   )
 
   event.locals.supabaseServiceRole = createClient(
-    VITE_PUBLIC_SUPABASE_URL,
+    PUBLIC_SUPABASE_URL,
     PRIVATE_SUPABASE_SERVICE_ROLE,
     { auth: { persistSession: false } },
   )
