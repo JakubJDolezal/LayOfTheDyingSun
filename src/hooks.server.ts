@@ -1,4 +1,7 @@
 // src/hooks.server.ts
+export const GET = () => {
+    return new Response(JSON.stringify(import.meta.env), { status: 200 });
+};
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
 import {
   PUBLIC_SUPABASE_ANON_KEY,

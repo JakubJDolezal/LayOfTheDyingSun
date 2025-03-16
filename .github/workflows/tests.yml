@@ -3,9 +3,9 @@ name: Tests
 on: [push, pull_request]
 
 env:
-  PUBLIC_SUPABASE_URL: "https://fake_test_url.supabase.co"
-  PUBLIC_SUPABASE_ANON_KEY: "fake_anon_key"
-  PRIVATE_SUPABASE_SERVICE_ROLE: "fake_service_role"
+  PUBLIC_SUPABASE_URL: 'https://yrwuyfnwhwtrhzemitex.supabase.co'
+  PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlyd3V5Zm53aHd0cmh6ZW1pdGV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwNTUxMDUsImV4cCI6MjA1NzYzMTEwNX0.bVvsWx_xTWX3nel15JOa6jlQ-jholuH2bzAviiBskiQ"
+  PRIVATE_SUPABASE_SERVICE_ROLE: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
   PRIVATE_STRIPE_API_KEY: "fake_strip_api_key"
 
 jobs:
