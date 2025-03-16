@@ -1,6 +1,6 @@
 import {
-  PUBLIC_SUPABASE_ANON_KEY,
-  PUBLIC_SUPABASE_URL,
+  VITE_PUBLIC_SUPABASE_ANON_KEY as PUBLIC_SUPABASE_ANON_KEY,
+  VITE_PUBLIC_SUPABASE_URL as PUBLIC_SUPABASE_URL,
 } from "$env/static/public"
 import {
   createBrowserClient,

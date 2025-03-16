@@ -1,7 +1,7 @@
 import { Resend } from "resend"
 import { env } from "$env/dynamic/private"
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
-import { PUBLIC_SUPABASE_URL } from "$env/static/public"
+import { VITE_PUBLIC_SUPABASE_URL } from "$env/static/public"
 import { createClient, type User } from "@supabase/supabase-js"
 import type { Database } from "../DatabaseDefinitions"
 import handlebars from "handlebars"
@@ -59,7 +59,7 @@ export const sendUserEmail = async ({
   // Check if the user email is verified using the full user object from service role
   // Oauth uses email_verified, and email auth uses email_confirmed_at
   const serverSupabase = createClient<Database>(
-    PUBLIC_SUPABASE_URL,
+    VITE_PUBLIC_SUPABASE_URL,
     PRIVATE_SUPABASE_SERVICE_ROLE,
     { auth: { persistSession: false } },
   )
