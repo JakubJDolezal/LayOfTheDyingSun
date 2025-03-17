@@ -2,5 +2,9 @@ name = "handelwebsite"
 type = "javascript"
 
 account_id = "835e77b528d856d2d4eb62c7ebf1d406"
+
 workers_dev = true
 compatibility_date = "2024-03-16" # Update to the latest
+[vars]
+PUBLIC_SUPABASE_URL = 'https://yrwuyfnwhwtrhzemitex.supabase.co'
+PUBLIC_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlyd3V5Zm53aHd0cmh6ZW1pdGV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwNTUxMDUsImV4cCI6MjA1NzYzMTEwNX0.bVvsWx_xTWX3nel15JOa6jlQ-jholuH2bzAviiBskiQ'

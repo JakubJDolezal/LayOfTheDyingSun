@@ -1,7 +1,7 @@
 import { Resend } from "resend"
 import { env } from "$env/dynamic/private"
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
-import { PUBLIC_SUPABASE_URL } from "$env/static/public"
+import { PUBLIC_SUPABASE_URL } from "$env/static/private"
 import { createClient, type User } from "@supabase/supabase-js"
 import type { Database } from "../DatabaseDefinitions"
 import handlebars from "handlebars"

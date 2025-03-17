@@ -1,7 +1,7 @@
 import {
-  PUBLIC_SUPABASE_ANON_KEY as PUBLIC_SUPABASE_ANON_KEY,
-  PUBLIC_SUPABASE_URL as PUBLIC_SUPABASE_URL,
-} from "$env/static/public"
+  PUBLIC_SUPABASE_ANON_KEY,
+  PUBLIC_SUPABASE_URL
+} from "$env/static/private"
 import {
   createBrowserClient,
   createServerClient,
