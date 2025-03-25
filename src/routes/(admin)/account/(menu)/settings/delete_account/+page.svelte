@@ -27,11 +27,5 @@
   successBody="Your account will be deleted shortly."
   formTarget="/account/api?/deleteAccount"
   fields={[
-    {
-      id: "currentPassword",
-      label: "Current Password",
-      initialValue: "",
-      inputType: "password",
-    },
   ]}
 />

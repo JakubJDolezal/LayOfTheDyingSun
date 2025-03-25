@@ -111,6 +111,29 @@
         </a>
       </li>
       <li>
+      <a
+        href="/account/graph"
+        class={adminSection === "graph" ? "active" : ""}
+        onclick={closeDrawer}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 3v18h18M8 13l3-3 4 4 5-5"
+          />
+        </svg>
+        User Configuration Graph
+      </a>
+    </li>
+      <li>
         <a
           href="/account/settings"
           class={adminSection === "settings" ? "active" : ""}

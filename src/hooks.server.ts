@@ -87,12 +87,15 @@ export const supabase: Handle = async ({ event, resolve }) => {
 
 // Not called for prerendered marketing pages so generally okay to call on ever server request
 // Next-page CSR will mean relatively minimal calls to this hook
-const authGuard: Handle = async ({ event, resolve }) => {
-  const { session, user } = await event.locals.safeGetSession()
-  event.locals.session = session
-  event.locals.user = user
+  const protectedRoutes = ["/account", "/dashboard", "/settings"]; // Example
 
-  return resolve(event)
-}
+  const authGuard: Handle = async ({ event, resolve }) => {
+    if (protectedRoutes.some((route) => event.url.pathname.startsWith(route))) {
+      const { session, user } = await event.locals.safeGetSession();
+      event.locals.session = session;
+      event.locals.user = user;
+    }
+    return resolve(event);
+  };
 
 export const handle: Handle = sequence(supabase, authGuard)

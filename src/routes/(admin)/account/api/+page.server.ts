@@ -45,8 +45,8 @@ export const actions = {
     if (!email || email === "") {
       validationError = "An email address is required"
     }
-    // Dead simple check -- there's no standard here (which is followed),
-    // and lots of errors will be missed until we actually email to verify, so
+      // Dead simple check -- there's no standard here (which is followed),
+      // and lots of errors will be missed until we actually email to verify, so
     // just do that
     else if (!email.includes("@")) {
       validationError = "A valid email address is required"
@@ -178,52 +178,36 @@ export const actions = {
       currentPassword,
     }
   },
-  deleteAccount: async ({
-    request,
-    locals: { supabase, supabaseServiceRole, safeGetSession },
-  }) => {
+
+  deleteAccount: async ({ request,
+                          locals: { supabase, supabaseServiceRole, safeGetSession },
+                        }) => {
     const { session, user } = await safeGetSession()
     if (!session || !user?.id) {
       redirect(303, "/login")
     }
 
-    const formData = await request.formData()
-    const currentPassword = formData.get("currentPassword") as string
+    // const { data: { session } } = await supabase.auth.getSession()
 
-    if (!currentPassword) {
-      return fail(400, {
-        errorMessage:
-          "You must provide your current password to delete your account. If you forgot it, sign out then use 'forgot password' on the sign in page.",
-        errorFields: ["currentPassword"],
-        currentPassword,
-      })
+    // If there's an active session, you can proceed with the account deletion
+    if (session) {
+      // User is authenticated, proceed with account deletion
+      const { error } = await supabaseServiceRole.auth.admin.deleteUser(user.id);
+      if (error) {
+        // Handle deletion error
+        console.error("Error deleting account:", error)
+        return { success: false, error: error.message }
+      }
+      await supabase.auth.signOut()
+      // Redirect after successful deletion
+      redirect(303, "/")
+    } else {
+      // No valid session, redirect to login
+      redirect(303, "/login")
     }
-
-    // Check current password is correct before deleting account
-    const { error: pwError } = await supabase.auth.signInWithPassword({
-      email: user?.email || "",
-      password: currentPassword,
-    })
-    if (pwError) {
-      // The user was logged out because of bad password. Redirect to error page explaining.
-      redirect(303, "/login/current_password_error")
-    }
-
-    const { error } = await supabaseServiceRole.auth.admin.deleteUser(
-      user.id,
-      true,
-    )
-    if (error) {
-      console.error("Error deleting user", error)
-      return fail(500, {
-        errorMessage: "Unknown error. If this persists please contact us.",
-        currentPassword,
-      })
-    }
-
-    await supabase.auth.signOut()
-    redirect(303, "/")
   },
+
+
   updateProfile: async ({ request, locals: { supabase, safeGetSession } }) => {
     const { session, user } = await safeGetSession()
     if (!session || !user?.id) {

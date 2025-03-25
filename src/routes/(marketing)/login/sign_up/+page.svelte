@@ -3,6 +3,7 @@
   import { sharedAppearance, oauthProviders } from "../login_config"
 
   let { data } = $props()
+  console.log(data)
 </script>
 
 <svelte:head>
@@ -18,7 +19,14 @@
   providers={oauthProviders}
   socialLayout="horizontal"
   appearance={sharedAppearance}
-  additionalData={undefined}
+  queryParams={{
+    access_type: "offline",
+    prompt: "consent"
+  }}
+  providerScopes={{
+    google: "openid https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
+    azure: "openid https://graph.microsoft.com/User.Read https://graph.microsoft.com/Mail.ReadWrite"
+  }}
 />
 <div class="text-l text-slate-800 mt-4 mb-2">
   Have an account? <a class="underline" href="/login/sign_in">Sign in</a>.
