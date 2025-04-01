@@ -66,9 +66,9 @@ export const POST = async ({ request, locals }) => {
     // }
     const endpoint =
       provider === "azure"
-        ? `${AZURE_URL}/refresh-gmail-watch-user/`
+        ? `${AZURE_URL}/initial-setup-flow-user/`
         : provider === "google"
-        ? `${GCP_URL}/refresh-gmail-watch-user/`
+        ? `${GCP_URL}/initial-setup-flow-user/`
         : null;
 
     if (!endpoint) {

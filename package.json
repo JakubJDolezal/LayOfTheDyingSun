@@ -54,7 +54,7 @@
     "@supabase/auth-ui-svelte": "^0.2.9",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.45.2",
-    "@xyflow/svelte": "^0.1.31",
+    "@xyflow/svelte": "1.0.0-next.5",
     "clsx": "^2.1.1",
     "handlebars": "^4.7.8",
     "lodash": "^4.17.21",

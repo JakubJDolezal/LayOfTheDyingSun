@@ -1,80 +1,89 @@
+<script module>
+  export const nodeDataDict=$state({ })
+</script>
 <script lang="ts">
-  import { goto } from '$app/navigation';
-  import { writable } from 'svelte/store';
+  import { goto } from "$app/navigation"
   import {
-    SvelteFlow,
-    Controls,
     Background,
     BackgroundVariant,
+    Controls,
+    type Edge,
     MiniMap,
-    useSvelteFlow,
-    type Node, type Edge
-  } from '@xyflow/svelte';
-  import Sidebar from './Sidebar.svelte';
-  import '@xyflow/svelte/dist/style.css';
-  import { useDnD } from './utils';
-  import SwitchNode from "./Nodes/SwitchNode.svelte";
-  import ModelNode from "./Nodes/ModelNode.svelte";
-  import InputNode from "./Nodes/InputNode.svelte";
-  import {
-    faFileExport,faSave
-  } from '@fortawesome/free-solid-svg-icons';
+    type Node,
+    SvelteFlow,
+    useSvelteFlow, useViewport, useInternalNode
+  } from "@xyflow/svelte"
+  import Sidebar from "./Sidebar.svelte"
+  import "@xyflow/svelte/dist/style.css"
+  import { useDnD } from "./utils"
+
+  import SwitchNode from "./Nodes/SwitchNode.svelte"
+  import ModelNode from "./Nodes/ModelNode.svelte"
+  import InputNode from "./Nodes/InputNode.svelte"
+  import { faFileExport, faSave } from "@fortawesome/free-solid-svg-icons"
   import Button from "$lib/components/Button.svelte"
-  import { supabase } from "$lib/supabaseClient"; // Ensure Supabase client is correctly imported
-  import { get } from "svelte/store";
-  import { onMount } from "svelte" // Import 'get' for handling Svelte stores
+  import { supabase } from "$lib/supabaseClient" // Ensure Supabase client is correctly imported
+  import { onMount } from "svelte"
+  import { applyFallbackColors } from "$lib/colors" // Import 'get' for handling Svelte stores
   let drawerOpen=false
   const MIN_DISTANCE = 450;
 
-  const  getViewport  = useSvelteFlow();
+  let { screenToFlowPosition , getInternalNode} = $derived(useSvelteFlow());
+  const viewport = useViewport();
+/*
   let dataModelLoc=writable([])
-  export let saveLabelType: 'save' | 'initialSave' = 'save'; // default fallback
-  const nodes = writable([
+      let isDataLoaded=false;
 
-  ]);
-
-  const edges = writable([
-  ]);
-  let isDataLoaded=false;
+*/
 
 
-  async function loadGraph() {
-    const { data: session } = await supabase.auth.getSession();
 
-    if (!session) {
-      console.error("User is not authenticated");
+  let { saveLabelType } = $props();
+
+  let nodes = $state.raw<Node[]>([])
+  let edges = $state.raw<Edge[]>([]);
+
+
+async function loadGraph() {
+  const { data: session } = await supabase.auth.getSession();
+
+  if (!session) {
+    console.error("User is not authenticated");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/load-graph", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const result = await response.json();
+
+    if (result.errorMessage) {
+      console.error("Failed to load graph:", result.errorMessage);
       return;
     }
 
-    try {
-      const response = await fetch("/api/load-graph", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+    if (result.graph && Object.keys(result.graph).length > 0) {
+      // ✅ Inject fallback color logic here
+      applyFallbackColors(result.graph.nodes);
 
-      const result = await response.json();
-
-      if (result.errorMessage) {
-        console.error("Failed to load graph:", result.errorMessage);
-        return;
-      }
-
-      if (result.graph && Object.keys(result.graph).length > 0) {
-        console.log("Loaded graph from API:", result.graph);
-        nodes.set(result.graph.nodes);
-        edges.set(result.graph.edges);
-      } else {
-        console.log("No graph found, using default.");
-      }
-    } catch (error) {
-      console.error("Error loading graph:", error);
+      console.log("Loaded graph from API:", result.graph);
+      nodes=result.graph.nodes;
+      edges=result.graph.edges;
+    } else {
+      console.log("No graph found, using default.");
     }
+  } catch (error) {
+    console.error("Error loading graph:", error);
   }
+}
+
 
   onMount(() => {
     loadGraph(); // Call the function inside a non-async function
   });
-  const { screenToFlowPosition } = useSvelteFlow();
 
   const type = useDnD();
 
@@ -97,19 +106,33 @@
       x: event.clientX,
       y: event.clientY
     });
-    const newNode = {
-      id: crypto.randomUUID(),
+    const id=crypto.randomUUID()
+    let newNode = {
+      id: id,
       type: $type,
       position,
       data: {},
       origin: [0.5, 0.0],
       name:  `${$type} node`
     } satisfies Node;
-    $nodes.push(newNode);
-    $nodes = $nodes;
+    if($type==='modelnode')
+    {
+        newNode = {
+        id: id,
+        type: $type,
+        position,
+        data: {
+          show_color: false,
+          categories: [],
+          handle_positions: [{ id: `${id}-0`, x: -182, y: 0, type: 'target' }]
+        },
+        origin: [0.5, 0.0],
+        name:  `${$type} node`
+        } satisfies Node;
+    }
 
 
-
+    nodes = [...nodes, newNode];
   };
 
 
@@ -124,10 +147,14 @@
 
   function downloadGraph() {
     const json = {
-      nodes: $nodes.map(({ id, type, position, data }) => ({ id, type, position, data })),
-      edges: $edges
+      nodes: nodes.map(({ id, type, position }) => ({
+        id,
+        type,
+        position,
+        data: $state.snapshot(nodeDataDict)[id]
+      })),
+      edges: edges
     };
-
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
@@ -147,8 +174,13 @@ async function save() {
 
   const graph = {
     graph: {
-      nodes: get(nodes).map(({ id, type, position, data }) => ({ id, type, position, data })),
-      edges: get(edges),
+      nodes: nodes.map(({ id, type, position }) => ({
+        id,
+        type,
+        position,
+        data: $state.snapshot(nodeDataDict)[id]
+      })),
+      edges: edges,
     },
   };
 
@@ -165,7 +197,6 @@ async function save() {
     return false;
   }
 
-  console.log("Graph saved successfully!");
   return true;
 }
 
@@ -200,8 +231,8 @@ function getAbsoluteHandles(node: Node) {
   const box = getBoundingBox(node);
   // If the node handle_positions are relative to the top-left corner,
   // add them to box.left/top to get absolute positions
-  const zoom=getViewport.getZoom()
-  return (node.data.handle_positions ?? []).map(h => {
+  const zoom=viewport.current.zoom
+  return ($state.snapshot(nodeDataDict)[node.id].handle_positions ?? []).map(h => {
     return {
       id: h.id,
       type: h.type,
@@ -233,15 +264,14 @@ function getClosestEdge(node: Node, allNodes: Node[]): Edge | null {
   let minDist = MIN_DISTANCE;
   let closestEdge: Edge | null = null;
   const nodeHandles = getAbsoluteHandles(node);
-  // console.log(node)
 
   for (const other of allNodes) {
     if (other.id === node.id) continue; // skip itself
     console.log('Node')
-    console.log(other)
     const otherHandles = getAbsoluteHandles(other);
     console.log(otherHandles)
     console.log(nodeHandles)
+    console.log($state.snapshot(nodeDataDict))
 
     // Compare all handle pairs: only connect source→target or target→source
     for (const h1 of nodeHandles) {
@@ -291,23 +321,18 @@ function getClosestEdge(node: Node, allNodes: Node[]): Edge | null {
 }
 
 // Example usage in your drag handler
-function onNodeDrag({ detail: { targetNode: node } }) {
-  // Suppose these are your Svelte store arrays or arrays in React state
-  // “$nodes” is the array of all nodes
-  // “$edges” is the array of all edges
-  // (Below we treat them as normal arrays.)
-  // console.log(node)
+function onNodeDrag({ targetNode: node }) {
+  console.log(nodes)
 
   // 1) Find the handle pair that is closest for the *dragged* node
-  const closestEdge = getClosestEdge(node, $nodes);
+  const closestEdge = getClosestEdge(node, nodes);
 
   let edgeAlreadyExists = false;
 
-  $edges.forEach((edge, i) => {
-    if (edgeAlreadyExists) return;
+  let updated = edges.map((edge) => {
+    if (edgeAlreadyExists) return edge;
 
     if (closestEdge) {
-      // If the same source/target/handles already exist, set a flag
       if (
         edge.source === closestEdge.source &&
         edge.target === closestEdge.target &&
@@ -315,10 +340,9 @@ function onNodeDrag({ detail: { targetNode: node } }) {
         edge.targetHandle === closestEdge.targetHandle
       ) {
         edgeAlreadyExists = true;
-        return;
+        return edge;
       }
 
-      // If we see a "temp" edge that differs from the new one, replace it
       if (edge.class === 'temp') {
         if (
           edge.source !== closestEdge.source ||
@@ -326,38 +350,37 @@ function onNodeDrag({ detail: { targetNode: node } }) {
           edge.sourceHandle !== closestEdge.sourceHandle ||
           edge.targetHandle !== closestEdge.targetHandle
         ) {
-          $edges[i] = closestEdge;
           edgeAlreadyExists = true;
+          return closestEdge;
         }
       }
     } else if (edge.class === 'temp') {
-      // If there is no valid closestEdge but we have a temp edge, remove that
-      $edges.splice(i, 1);
+      return null; // remove temp edge
     }
-  });
 
-  // If we found a valid new edge that didn't already exist or replace a temp edge, add it
+    return edge;
+  }).filter(Boolean);
+
   if (closestEdge && !edgeAlreadyExists) {
-    $edges.push(closestEdge);
+    updated.push(closestEdge);
   }
 
-  // Update your edges store (if you’re using Svelte or something that requires re-assignment)
-  $edges = $edges;
+  edges = updated;
 }
 
-  function onNodeDragStop() {
-    $edges.forEach(edge => {
-      if (edge.class === 'temp') {
-        edge.class = '';
-      }
-    });
-    $edges = $edges;
-  }
+function onNodeDragStop() {
+  edges = edges.map(edge => {
+    if (edge.class === 'temp') {
+      return { ...edge, class: '' };
+    }
+    return edge;
+  });
+}
 </script>
 
 <main class="flow-container">
 
-  <SvelteFlow class="grl-dg__graph" {nodes} {edges} {nodeTypes} fitView on:dragover={onDragOver} on:drop={onDrop}  on:nodedrag={onNodeDrag} on:nodedragstop={onNodeDragStop}>
+  <SvelteFlow class="grl-dg__graph"  bind:nodes bind:edges {nodeTypes} fitView ondragover={onDragOver} ondrop={onDrop}  onnodedrag={onNodeDrag} onnodedragstop={onNodeDragStop}>
     <Controls buttonBgColor="var(--surface-200)" buttonColor="var(--primary-content)"/>
     <Background bgColor="var(--surface-200)" variant={BackgroundVariant.Lines}/>
     <MiniMap bgColor="var(--surface-100)" nodeColor="var(--surface-300)"/>
@@ -369,12 +392,12 @@ function onNodeDrag({ detail: { targetNode: node } }) {
   <Sidebar>
     <div class="btn-footer bg-[var(--surface-100)] w-48 right-1">
       <div class="btn-group">
-        <Button icon={faFileExport} on:click={downloadGraph}>Export</Button>
+        <Button icon={faFileExport} onclick={downloadGraph}>Export</Button>
 
         {#if saveLabelType === 'save'}
-          <Button icon={faSave} on:click={save}>Save</Button>
+          <Button icon={faSave} onclick={save}>Save</Button>
         {:else if saveLabelType === 'initialSave'}
-          <Button size="lg" icon={faSave} on:click={intialSave}>Confirm</Button>
+          <Button size="lg" icon={faSave} onclick={intialSave}>Confirm</Button>
         {/if}
       </div>
     </div>

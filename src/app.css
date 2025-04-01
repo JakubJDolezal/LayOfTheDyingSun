@@ -2,103 +2,94 @@
 
 @plugin '@tailwindcss/typography';
 @plugin "daisyui" {
-  /* Disable all other themes which forces the default theme created below. You can add a dark mode theme using daisyui if you like, and it will automatically use it when the user's system is in dark mode. Docs: https://daisyui.com/docs/themes/ */
 }
 
 @plugin "daisyui/theme" {
   default: true;
   prefersdark: false;
   color-scheme: light;
+  --color-base-100: oklch(98% 0 0);         /* near white paper */
+  --color-base-200: oklch(95% 0 0);         /* soft grey */
+  --color-base-300: oklch(90% 0 0);         /* light stroke */
+  --color-base-content: oklch(15% 0 0);     /* ink black */
 
-  /* Paper-like Background */
-  --color-base-100: oklch(92% 0.02 85); /* Warm off-white */
-  --color-base-200: oklch(87% 0.03 90); /* Slightly darker off-white */
-  --color-base-300: oklch(80% 0.04 80); /* Aged newspaper beige */
-  --color-base-content: oklch(10% 0.02 30); /* Deep charcoal (not full black for print effect) */
+  --color-primary: oklch(40% 0.15 260);     /* editorial deep blue */
+  --color-primary-content: oklch(98% 0 0);  /* white */
 
-  /* Headline & Accent Colors */
-  --color-primary: oklch(20% 0.05 30); /* Strong, newspaper-style ink black */
-  --color-primary-content: oklch(96% 0.01 80); /* Light text for dark backgrounds */
-  --color-secondary: oklch(45% 0.12 75); /* Muted mustard yellow */
-  --color-secondary-content: oklch(10% 0.02 30); /* Ink-dark text */
-  --color-accent: oklch(50% 0.14 25); /* Faded newspaper red */
-  --color-accent-content: oklch(96% 0.01 85); /* Off-white text */
+  --color-secondary: oklch(30% 0.07 20);    /* subdued maroon */
+  --color-secondary-content: oklch(95% 0 0);
 
-  /* Neutral Grays */
-  --color-neutral: oklch(65% 0.02 70); /* Light gray for subtle separators */
-  --color-neutral-content: oklch(10% 0.02 30); /* Dark print-like gray */
+  --color-accent: oklch(80% 0.05 120);      /* sage green highlight */
+  --color-accent-content: oklch(20% 0 0);
 
-  /* Info, Success, Warning, Error */
-  --color-info: oklch(60% 0.06 200); /* Faded cyan for retro-blue ink */
-  --color-info-content: oklch(98% 0.015 195); /* Off-white */
-  --color-success: oklch(50% 0.08 180); /* Muted green */
-  --color-success-content: oklch(98% 0.01 180); /* Off-white */
-  --color-warning: oklch(64% 0.18 50); /* Vintage orange-brown */
-  --color-warning-content: oklch(10% 0.02 30); /* Dark text */
-  --color-error: oklch(55% 0.16 15); /* Deep brown-red */
-  --color-error-content: oklch(96% 0.01 85); /* Off-white */
+  --color-neutral: oklch(20% 0 0);          /* carbon black */
+  --color-neutral-content: oklch(98% 0 0);
 
-  /* Typography & Styling */
-  --font-body: "Helvetica Neue", "Arial", sans-serif;
-  --font-headline: "Times New Roman", "Georgia", serif;
+  --color-info: oklch(60% 0.15 240);
+  --color-success: oklch(60% 0.2 145);
+  --color-warning: oklch(70% 0.18 85);
+  --color-error: oklch(60% 0.2 30);
 
-  /* Borders & Depth */
-  --radius-selector: 0rem; /* Sharp corners */
-  --radius-field: 0.15rem; /* Slightly rounded edges */
-  --radius-box: 0.2rem;
-  --size-selector: 0.2rem;
-  --size-field: 0.2rem;
-  --border: 1px solid rgba(0, 0, 0, 0.6); /* Subtle print-like lines */
-  --depth: 0; /* No shadow, keeping it flat */
-  /*--noise: 0.8; !* Slight noise to mimic paper texture *!*/
+  --color-info-content: oklch(100% 0 0);
+  --color-success-content: oklch(100% 0 0);
+  --color-warning-content: oklch(0% 0 0);
+  --color-error-content: oklch(100% 0 0);
+
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
+
+
 @plugin "daisyui/theme" {
   default: false;
   prefersdark: true;
   color-scheme: dark;
+  --color-base-100: oklch(20% 0.01 270);        /* dark grey paper */
+  --color-base-200: oklch(15% 0.01 270);
+  --color-base-300: oklch(10% 0.01 270);
+  --color-base-content: oklch(92% 0.01 270);    /* warm white text */
 
-  /* Dark, Ink-Heavy Background */
-  --color-base-100: oklch(12% 0.02 30); /* Deep charcoal, soft ink feel */
-  --color-base-200: oklch(15% 0.025 28); /* Slightly lighter, paper texture */
-  --color-base-300: oklch(20% 0.03 25); /* Vintage ink-black */
-  --color-base-content: oklch(90% 0.02 85); /* Off-white, aged paper feel */
+  --color-primary: oklch(70% 0.1 260);          /* desaturated cool blue */
+  --color-primary-content: oklch(10% 0 0);
 
-  /* Headlines & Key Accents */
-  --color-primary: oklch(85% 0.03 80); /* Warm off-white, aged print */
-  --color-primary-content: oklch(20% 0.025 30); /* Ink-dark text */
-  --color-secondary: oklch(50% 0.12 75); /* Muted mustard yellow */
-  --color-secondary-content: oklch(90% 0.015 80); /* Aged paper off-white */
-  --color-accent: oklch(60% 0.14 25); /* Faded red, old ink highlight */
-  --color-accent-content: oklch(95% 0.02 85); /* Soft warm white */
+  --color-secondary: oklch(60% 0.05 20);        /* soft burgundy */
+  --color-secondary-content: oklch(10% 0 0);
 
-  /* Neutral Grays */
-  --color-neutral: oklch(30% 0.02 60); /* Dark gray separators */
-  --color-neutral-content: oklch(90% 0.02 85); /* Aged off-white */
+  --color-accent: oklch(70% 0.05 120);          /* muted green */
+  --color-accent-content: oklch(10% 0 0);
 
-  /* Info, Success, Warning, Error */
-  --color-info: oklch(55% 0.06 200); /* Washed-out cyan for retro cool tones */
-  --color-info-content: oklch(98% 0.015 195); /* Warm light tone */
-  --color-success: oklch(45% 0.08 180); /* Faded green */
-  --color-success-content: oklch(95% 0.01 180); /* Off-white */
-  --color-warning: oklch(55% 0.18 50); /* Retro orange-brown */
-  --color-warning-content: oklch(15% 0.02 30); /* Dark ink */
-  --color-error: oklch(50% 0.16 15); /* Deep brown-red */
-  --color-error-content: oklch(95% 0.01 85); /* Off-white */
+  --color-neutral: oklch(90% 0.01 270);         /* soft warm grey */
+  --color-neutral-content: oklch(10% 0 0);
 
-  /* Typography & Styling */
-  --font-body: "Helvetica Neue", "Arial", sans-serif;
-  --font-headline: "Times New Roman", "Georgia", serif;
+  --color-info: oklch(70% 0.15 240);
+  --color-success: oklch(65% 0.15 145);
+  --color-warning: oklch(75% 0.2 85);
+  --color-error: oklch(65% 0.2 30);
 
-  /* Borders & Depth */
-  --radius-selector: 0rem; /* Sharp corners */
-  --radius-field: 0.15rem; /* Slightly rounded edges */
-  --radius-box: 0.2rem;
-  --size-selector: 0.2rem;
-  --size-field: 0.2rem;
-  --border: 1px solid rgba(255, 255, 255, 0.15); /* Soft ink-like borders */
-  --depth: 0; /* No shadow, keeping it flat */
-  /*--noise: 0.9; !* Higher noise for slight paper grain *!*/
+  --color-info-content: oklch(0% 0 0);
+  --color-success-content: oklch(0% 0 0);
+  --color-warning-content: oklch(0% 0 0);
+  --color-error-content: oklch(0% 0 0);
+
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
 }
+
+
 
 
 
@@ -1359,81 +1350,81 @@ button[disabled].authBtn::before {
   @apply mt-2 flex gap-x-6;
 }
 
-.multiselect-dropdown-options {
-  @apply max-h-96 overflow-y-scroll;
-}
+/*.multiselect-dropdown-options {*/
+/*  @apply max-h-96 overflow-y-scroll;*/
+/*}*/
 
-.node-settings-pop-up {
-  @apply p-2 bg-[var(--surface-100)] border border-[var(--border-300)] rounded-lg;
-}
+/*.node-settings-pop-up {*/
+/*  @apply p-2 bg-[var(--surface-100)] border border-[var(--border-300)] rounded-lg;*/
+/*}*/
 
-.node-settings-items {
-  @apply w-full flex flex-wrap justify-center items-center gap-1 px-0 pb-1 font-normal space-x-1 align-middle;
-}
+/*.node-settings-items {*/
+/*  @apply w-full flex flex-wrap justify-center items-center gap-1 px-0 pb-1 font-normal space-x-1 align-middle;*/
+/*}*/
 
-.node-category-buttons {
-  @apply flex flex-wrap gap-1;
-}
+/*.node-category-buttons {*/
+/*  @apply flex flex-wrap gap-1;*/
+/*}*/
 
-.node-category-buttons button {
-  @apply px-2 py-1 rounded bg-[var(--standard)] cursor-pointer text-xs;
-}
+/*.node-category-buttons button {*/
+/*  @apply px-2 py-1 rounded bg-[var(--standard)] cursor-pointer text-xs;*/
+/*}*/
 
-.node-category-buttons button.active {
-  @apply bg-[var(--primary)];
-}
+/*.node-category-buttons button.active {*/
+/*  @apply bg-[var(--primary)];*/
+/*}*/
 
-.node-btn-group {
-  @apply w-full flex flex-wrap justify-center items-center gap-1 px-1 pb-1 font-normal;
-}
+/*.node-btn-group {*/
+/*  @apply w-full flex flex-wrap justify-center items-center gap-1 px-1 pb-1 font-normal;*/
+/*}*/
 
-.node-tbl-title {
-  @apply py-2 text-[var(--primary-content)] uppercase text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis;
-}
+/*.node-tbl-title {*/
+/*  @apply py-2 text-[var(--primary-content)] uppercase text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis;*/
+/*}*/
 
-.node-tbl-title span {
-  @apply text-[var(--secondary-content)] font-normal;
-}
+/*.node-tbl-title span {*/
+/*  @apply text-[var(--secondary-content)] font-normal;*/
+/*}*/
 
-.node-tbl-container {
-  @apply overflow-auto border border-[var(--border-200)] rounded-lg w-full h-full;
-}
+/*.node-tbl-container {*/
+/*  @apply overflow-auto border border-[var(--border-200)] rounded-lg w-full h-full;*/
+/*}*/
 
-.node-tbl-wrapper {
-  @apply min-w-full divide-y divide-[var(--border-100)];
-}
+/*.node-tbl-wrapper {*/
+/*  @apply min-w-full divide-y divide-[var(--border-100)];*/
+/*}*/
 
-.node-tbl-table {
-  @apply w-full;
-}
+/*.node-tbl-table {*/
+/*  @apply w-full;*/
+/*}*/
 
-.node-tbl-head {
-  @apply bg-[var(--surface-200)] border-b border-[var(--border-200)] rounded-lg sticky top-0 z-10;
-}
+/*.node-tbl-head {*/
+/*  @apply bg-[var(--surface-200)] border-b border-[var(--border-200)] rounded-lg sticky top-0 z-10;*/
+/*}*/
 
-.node-tbl-tr {
-  @apply w-full;
-}
+/*.node-tbl-tr {*/
+/*  @apply w-full;*/
+/*}*/
 
-.node-tbl-th {
-  @apply px-1 pt-1 text-sm font-normal text-[var(--secondary-content)] sticky top-0;
-}
+/*.node-tbl-th {*/
+/*  @apply px-1 pt-1 text-sm font-normal text-[var(--secondary-content)] sticky top-0;*/
+/*}*/
 
-.node-tbl-td {
-  @apply px-1 pt-1 text-sm text-[var(--primary-content)] z-0;
-}
+/*.node-tbl-td {*/
+/*  @apply px-1 pt-1 text-sm text-[var(--primary-content)] z-0;*/
+/*}*/
 
-.node-tbl-th-label {
-  @apply py-2 text-[var(--primary-content)] text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis;
-}
+/*.node-tbl-th-label {*/
+/*  @apply py-2 text-[var(--primary-content)] text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis;*/
+/*}*/
 
-.node-tbl-th-action {
-  @apply pb-1 flex justify-end -mb-1 bg-[var(--surface-300)] border border-b-0 border-[var(--border-100)] rounded-t-md;
-}
+/*.node-tbl-th-action {*/
+/*  @apply pb-1 flex justify-end -mb-1 bg-[var(--surface-300)] border border-b-0 border-[var(--border-100)] rounded-t-md;*/
+/*}*/
 
-.node-tbl-th-button {
-  @apply bg-transparent text-[var(--color-surface-content)] align-middle h-6 w-6 hover:text-[var(--color-surface-content)];
-}
+/*.node-tbl-th-button {*/
+/*  @apply bg-transparent text-[var(--color-surface-content)] align-middle h-6 w-6 hover:text-[var(--color-surface-content)];*/
+/*}*/
 
 /*!* Charts *!*/
 

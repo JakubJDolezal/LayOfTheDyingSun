@@ -1,15 +1,29 @@
 <script lang="ts">
   import Icon from './Icon.svelte';
   import { clsx } from 'clsx';
+  interface ButtonProps {
+    onclick: () => void;
+    type?: 'button' | 'submit' | 'reset';
+    icon?: any;
+    disabled?: boolean;
+    variant?: 'primary' | 'secondary' | 'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'error';
+    outline?: boolean;
+    loading?: boolean;
+    size?: 'xs' | 'sm' | 'md' | 'lg';
+    shape?: 'circle' | 'square';
+  }
 
-  export let type: 'button' | 'submit' | 'reset' = 'button';
-  export let icon: any = undefined;
-  export let disabled: boolean = false;
-  export let variant: 'primary' | 'secondary' | 'accent' | 'neutral' | 'info' | 'success' | 'warning' | 'error' = 'primary';
-  export let outline: boolean = false;
-  export let loading: boolean = false;
-  export let size: 'xs' | 'sm' | 'md' | 'lg' = 'md';
-  export let shape: 'circle' | 'square' = 'square';
+  let {
+    onclick,
+    type = 'button',
+    icon = undefined,
+    disabled = false,
+    variant = 'primary',
+    outline = false,
+    loading = false,
+    size = 'md',
+    shape = 'square'
+  }:ButtonProps = $props();
 
   // Map button sizes to icon sizes
   const iconSizeMap = {
@@ -32,7 +46,7 @@
     `btn-${shape}`,
     loading && 'loading',
   )}
-  on:click
+  {onclick}
   {disabled}
 >
   {#if icon}
