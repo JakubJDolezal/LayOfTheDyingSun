@@ -132,21 +132,9 @@
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
-<script lang="ts">
-  import { onMount } from "svelte";
-  import { Background, SvelteFlowProvider, BackgroundVariant } from "@xyflow/svelte";
-  import Flow from '../../../(admin)/account/(menu)/graph/Flow.svelte';
-  import DnDProvider from '../../../(admin)/account/(menu)/graph/DnDProvider.svelte';
 
-</script>
 
 <svelte:head>
   <title>Jaid Gym: Design</title>
   <meta name="Design" content="Design" />
 </svelte:head>
-
-<SvelteFlowProvider>
-  <DnDProvider>
-    <Flow saveLabelType="initialSave" /> <!-- 🔥 Pass it here -->
-  </DnDProvider>
-</SvelteFlowProvider>
