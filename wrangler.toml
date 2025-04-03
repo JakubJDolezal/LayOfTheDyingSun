@@ -1,4 +1,4 @@
-name = "handelwebsite"
+name = "layofthedyingsun"
 
 account_id = "835e77b528d856d2d4eb62c7ebf1d406"
 main = "./.svelte-kit/cloudflare/_worker.js"

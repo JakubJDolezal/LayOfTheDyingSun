@@ -58,6 +58,7 @@
     "clsx": "^2.1.1",
     "handlebars": "^4.7.8",
     "lodash": "^4.17.21",
+    "pixi.js": "^8.9.1",
     "resend": "^3.5.0",
     "stripe": "^13.3.0",
     "svelte-fa": "^4.0.3",

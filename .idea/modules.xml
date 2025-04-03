@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/HandelWebsite.iml" filepath="$PROJECT_DIR$/.idea/HandelWebsite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../LayOfTheDyingSun/.idea/SorcererKingGame.iml" filepath="$PROJECT_DIR$/../LayOfTheDyingSun/.idea/SorcererKingGame.iml" />
     </modules>
   </component>
 </project>

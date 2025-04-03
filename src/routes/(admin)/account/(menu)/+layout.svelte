@@ -112,8 +112,8 @@
       </li>
       <li>
       <a
-        href="/account/graph"
-        class={adminSection === "graph" ? "active" : ""}
+        href="/account/game"
+        class={adminSection === "game" ? "active" : ""}
         onclick={closeDrawer}
       >
         <svg
@@ -130,7 +130,7 @@
             d="M3 3v18h18M8 13l3-3 4 4 5-5"
           />
         </svg>
-        User Configuration Graph
+        Game
       </a>
     </li>
       <li>
